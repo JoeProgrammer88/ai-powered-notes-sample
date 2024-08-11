@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
-using Notes.ViewModels;
-using System.Text.RegularExpressions;
 using System.Numerics.Tensors;
 
 namespace Notes.AI.Embeddings
@@ -65,7 +63,7 @@ namespace Notes.AI.Embeddings
             {
                 if (sentence.Length > maxLength)
                 {
-                    if (textChunks.Count > 0)
+                    if (currentChunk.Length > 0)
                     {
                         textChunks.Add(currentChunk);
                         currentChunk = string.Empty;
@@ -127,7 +125,9 @@ namespace Notes.AI.Embeddings
                         currentChunk = string.Empty;
                     }
                     textChunks.AddRange(SplitParagraphInChunks(paragraph, maxLength));
+                    continue;
                 }
+
                 if (currentChunk.Length + paragraph.Length >= maxLength)
                 {
                     textChunks.Add(currentChunk);
